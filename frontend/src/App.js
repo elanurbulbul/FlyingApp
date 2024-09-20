@@ -1,12 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Home from "./components/home";
+import Destination from "./components/destination";
 
-function App() {
+
+const App = () => {
+  
+
   return (
-    <div className="App">
-      aaaa
+    <div>
+     <Home/>
+     <Destination/>
     </div>
   );
-}
+  
+};
 
 export default App;
