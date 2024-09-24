@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import RoutePage from "./components/Route";
+import Navbar from "./components/Navbar";
 
 
 const App = () => {
@@ -9,7 +10,7 @@ const App = () => {
   return (
     <div>
        <Router>
-      
+        <Navbar/>
         <div className="content">
           <RoutePage />
         </div>

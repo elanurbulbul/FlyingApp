@@ -1,17 +1,54 @@
 const express = require('express');
 const request = require('request');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const axios = require('axios');
 const app = express();
 const port = 3001;
 
- const FLIGHTS_API_URL = 'https://api.schiphol.nl/public-flights/flights';
+const FLIGHTS_API_URL = 'https://api.schiphol.nl/public-flights/flights';
 const DESTINATIONS_API_URL = 'https://api.schiphol.nl/public-flights/destinations';
 const APP_ID = '08735cd9'; // Schiphol API App ID
 const APP_KEY = '85ecd766959d1c784d8ec20c48a2deda'; // Schiphol API App Key
 const RESOURCE_VERSION = 'v4';
+const Flight = require('./models/Flight'); 
 
 app.use(cors());
+
+mongoose.connect('mongodb://localhost:27017/flights', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("MongoDB'ye bağlandı!"))
+.catch(err => console.error("MongoDB'ye bağlanırken hata:", err));
+
+app.post('/flights/reserve', async (req, res) => {
+  const { flightName, scheduleDate, scheduleTime, destinations, userId } = req.body;
+
+  const flight = new Flight({
+    flightName,
+    scheduleDate,
+    scheduleTime,
+    route: { destinations },
+    userId,
+  });
+
+  try {
+    await flight.save();
+    res.status(201).json({ message: "Uçuş rezervasyonu başarıyla kaydedildi!" });
+  } catch (error) {
+    res.status(400).json({ message: "Uçuş rezervasyonu kaydedilemedi!", error });
+  }
+});
+// Kullanıcının rezervasyonlarını listeleme
+app.get('/flights/my-flights/:userId', async (req, res) => {
+  try {
+    const flights = await Flight.find({ userId: req.params.userId });
+    res.json(flights);
+  } catch (error) {
+    res.status(500).json({ message: "Uçuş verileri çekilemedi!" });
+  }
+});
 
 //Uçuş verilerini alma endpoint'i
 
@@ -68,13 +105,23 @@ function parseLinkHeader(header, rel) {
 
 // API isteği için bir endpoint oluştur
 app.get('/flights', async (req, res) => {
-  const { scheduleDate } = req.query;  // Tarihi query parametresi ile al
+  const { scheduleDate, direction } = req.query;  // Query'den gelen scheduleDate ve direction
 
   try {
-    const flights = await fetchAllFlights();
-    res.json(flights);
+    // API'den tüm uçuşları çek
+    const flights = await fetchAllFlights(scheduleDate);
+
+    // Eğer direction (yön) seçilmişse filtre uygula
+    const filteredFlights = flights.filter(flight => {
+      if (direction) {
+        return flight.flightDirection === direction;
+      }
+      return true; // Eğer yön yoksa tüm uçuşları göster
+    });
+
+    res.json(filteredFlights);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch destinations' });
+    res.status(500).json({ error: 'Failed to fetch flights' });
   }
 });
 
@@ -90,8 +137,8 @@ async function fetchAllDestinations(page = 1) {
     try {
       const response = await axios.get(nextPageUrl, {
         headers: {
-          'ResourceVersion': RESOURCE_VERSION,  // API sürümünü belirle
-          'app_id': APP_ID,   // Gerekli ise app_id ekleyin
+          'ResourceVersion': RESOURCE_VERSION,  
+          'app_id': APP_ID,   
           'app_key': APP_KEY
         }
       });

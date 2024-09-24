@@ -2,13 +2,17 @@ import React from 'react';
 import FlightCard from './FlightCard';
 import Stack from 'react-bootstrap/Stack';
 
-const FlightList = ({ flights, getCountryByIata, visibleFlights, showMoreFlights }) => {
+const FlightList = ({ flights, getCountryByIata, visibleFlights, showMoreFlights, reserveFlight }) => {
   return (
     <div>
-      {/* Stack bileşenini kullanarak listelenen uçuşları dikey bir yığın olarak göster */}
       <Stack gap={3}>
         {flights.slice(0, visibleFlights).map((flight) => (
-          <FlightCard key={flight.id} flight={flight} getCountryByIata={getCountryByIata} />
+          <FlightCard 
+            key={flight.id} 
+            flight={flight} 
+            getCountryByIata={getCountryByIata}
+            reserveFlight={reserveFlight} // Rezervasyon fonksiyonunu FlightCard'a geçir
+          />
         ))}
       </Stack>
 
