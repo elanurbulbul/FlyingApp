@@ -8,7 +8,7 @@ const FlightCard = ({ flight, getCountryByIata }) => {
       <p>Saat: {flight.scheduleTime}</p>
       <p>Rota: {flight.route.destinations.map((destination, index) => (
         <span key={index}>
-          {destination} ({getCountryByIata(destination)})
+          {destination} {getCountryByIata(destination)}
           {index < flight.route.destinations.length - 1 ? ', ' : ''}
         </span>
       ))}</p>

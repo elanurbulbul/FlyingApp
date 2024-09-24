@@ -1,15 +1,16 @@
-// FlightList.js
 import React from 'react';
 import FlightCard from './FlightCard';
+import Stack from 'react-bootstrap/Stack';
 
 const FlightList = ({ flights, getCountryByIata, visibleFlights, showMoreFlights }) => {
   return (
     <div>
-      <div style={styles.listContainer}>
+      {/* Stack bileşenini kullanarak listelenen uçuşları dikey bir yığın olarak göster */}
+      <Stack gap={3}>
         {flights.slice(0, visibleFlights).map((flight) => (
           <FlightCard key={flight.id} flight={flight} getCountryByIata={getCountryByIata} />
         ))}
-      </div>
+      </Stack>
 
       {/* Show More butonunu ekle */}
       {visibleFlights < flights.length && (
@@ -22,11 +23,6 @@ const FlightList = ({ flights, getCountryByIata, visibleFlights, showMoreFlights
 };
 
 const styles = {
-  listContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
   showMoreButton: {
     display: 'block',
     margin: '20px auto',

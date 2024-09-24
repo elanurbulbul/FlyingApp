@@ -38,10 +38,10 @@ async function fetchAllFlights(page = 0, scheduleDate = '') {
       // Gelen sayfadaki ucusları kaydet
       flights = flights.concat(response.data.flights);
 
-      // `Link` başlığında `next` var mı kontrol et
+      // Link başlığında next var mı kontrol et
       const linkHeader = response.headers.link;
       const nextLink = parseLinkHeader(linkHeader, 'next');
-      nextPageUrl = nextLink ? nextLink.url : null;  // Eğer `next` varsa URL'i al
+      nextPageUrl = nextLink ? nextLink.url : null;  // Eğer next varsa URL'i al
 
     } catch (error) {
       console.error('Error fetching destinations:', error);
@@ -84,7 +84,7 @@ app.get('/flights', async (req, res) => {
 async function fetchAllDestinations(page = 1) {
   let destinations = [];
   let currentPage = page;
-  let nextPageUrl = `${DESTINATIONS_API_URL}?page=${currentPage}&sort=%2Biata`;
+  let nextPageUrl = ` ${DESTINATIONS_API_URL}?page=${currentPage}&sort=%2Biata` ;
 
   while (nextPageUrl) {
     try {
@@ -99,10 +99,10 @@ async function fetchAllDestinations(page = 1) {
       // Gelen sayfadaki destinasyonları kaydet
       destinations = destinations.concat(response.data.destinations);
 
-      // `Link` başlığında `next` var mı kontrol et
+      // Link başlığında next var mı kontrol et
       const linkHeader = response.headers.link;
       const nextLink = parseLinkHeader(linkHeader, 'next');
-      nextPageUrl = nextLink ? nextLink.url : null;  // Eğer `next` varsa URL'i al
+      nextPageUrl = nextLink ? nextLink.url : null;  // Eğer next varsa URL'i al
 
     } catch (error) {
       console.error('Error fetching destinations:', error);
@@ -138,5 +138,5 @@ app.get('/destinations', async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Proxy server running at http://localhost:${port}`);
+  console.log(`Proxy server running at http://localhost:${port}` );
 });

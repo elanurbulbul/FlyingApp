@@ -11,7 +11,7 @@ const Home = () => {
   const [loadingDestinations, setLoadingDestinations] = useState(true);
   const [errorFlights, setErrorFlights] = useState(null);
   const [errorDestinations, setErrorDestinations] = useState(null);
-  const [visibleFlights, setVisibleFlights] = useState(20);  // İlk etapta 10 uçuş göstereceğiz
+  const [visibleFlights, setVisibleFlights] = useState(20);  // İlk etapta 20 uçuş göstereceğiz
 
   useEffect(() => {
     const fetchFlights = async () => {
@@ -51,7 +51,7 @@ const Home = () => {
     const destination = destinations.find(dest => dest.iata === iataCode);
     if (!destination) {
       console.warn(`IATA code ${iataCode} için eşleşme bulunamadı!`);
-      return "Bilinmeyen ülke";
+      return '';
     }
     return `${destination.city}, ${destination.country}`;
   };
