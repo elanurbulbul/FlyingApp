@@ -82,9 +82,7 @@ const Home = () => {
         visibleFlights={visibleFlights}
         showMoreFlights={showMoreFlights}
       />
-      {visibleFlights < flights.length && (
-        <Button variant="primary" onClick={showMoreFlights}>Daha Fazla Göster</Button>
-      )}
+      
     </Container>
   );
 };
