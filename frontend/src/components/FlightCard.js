@@ -1,8 +1,9 @@
 import React from 'react';
+import { Card } from 'react-bootstrap';
 
 const FlightCard = ({ flight, getCountryByIata }) => {
   return (
-    <div style={styles.card}>
+    <Card className='flex justify-content-between' style={styles.card}>
       <h3>{flight.flightName}</h3>
       <p>Tarih: {flight.scheduleDate}</p>
       <p>Saat: {flight.scheduleTime}</p>
@@ -12,7 +13,7 @@ const FlightCard = ({ flight, getCountryByIata }) => {
           {index < flight.route.destinations.length - 1 ? ', ' : ''}
         </span>
       ))}</p>
-    </div>
+    </Card>
   );
 };
 

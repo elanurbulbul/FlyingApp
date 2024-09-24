@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Home from "./pages/home";
-import Destination from "./components/destination";
+import { BrowserRouter as Router } from "react-router-dom";
+import RoutePage from "./components/Route";
 
 
 const App = () => {
@@ -9,8 +8,14 @@ const App = () => {
 
   return (
     <div>
-     <Home/>
-     {/* <Destination/> */}
+       <Router>
+      
+        <div className="content">
+          <RoutePage />
+        </div>
+       
+      </Router>
+     
     </div>
   );
   
